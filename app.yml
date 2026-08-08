@@ -1,0 +1,17 @@
+command: ['streamlit', 'run', 'app.py']
+
+env:
+  - name: 'STREAMLIT_GATHER_USAGE_STATS'
+    value: 'false'
+  - name: PGHOST
+    value: '<your-endpoint-hostname>'          # e.g. ep-xyz.database.us-west-2.dev.databricks.com
+  - name: PGDATABASE
+    value: 'databricks_postgres'
+  - name: PGUSER
+    value: '<DATABRICKS_CLIENT_ID>'            # from the app's Environment tab, after you create the app
+  - name: PGPORT
+    value: '5432'
+  - name: PGSSLMODE
+    value: 'require'
+  - name: ENDPOINT_NAME
+    value: 'projects/<project-id>/branches/<branch-id>/endpoints/<endpoint-id>'
