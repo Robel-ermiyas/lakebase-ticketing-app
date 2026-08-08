@@ -39,6 +39,11 @@ Short version:
 5. Deploy the app from the Apps UI.
 
 ## Reflection
-- **Most difficult part:**
+- **Most difficult part:** What was the most difficult part?
+The trickiest part wasn't the app code itself but the deployment plumbing — I hit a Databricks Free Edition compute-provisioning bug that blocked app creation entirely, then had to work through securely connecting to Lakebase using OAuth token rotation and Databricks Secrets instead of hardcoded credentials, and finally tracked down a silent GRANT failure where my app's service principal had a Postgres role but no actual table permissions, which took some SQL diagnostics to catch.
+
 - **How Lakebase differs from a traditional analytics table:**
+Lakebase is a full OLTP Postgres database built for fast, transactional, row-level reads and writes with ACID guarantees, which is exactly what an interactive app doing frequent single-record inserts and updates needs; a traditional analytics table (like a Delta table in Unity Catalog) is instead optimized for large batch scans and aggregations, not for the kind of constant small read/write traffic a live support ticketing app generates.
+
 - **Feature to add next:**
+I'd add AI-powered ticket triage — automatically suggesting a priority and category when a ticket is created, and maybe drafting a first response based on similar past tickets.
