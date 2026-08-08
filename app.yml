@@ -9,4 +9,22 @@ env:
     value: '5432'
   - name: PGSSLMODE
     value: 'require'
+  - name: ENDPOINT_NAME
+    valueFrom: endpoint_secret
 
+# NOTE on secrets / workspace-specific config — this file is safe to make
+# public, nothing real lives in it:
+#
+# - PGHOST and PGUSER are injected automatically by Databricks at deploy
+#   time when you attach the Lakebase database as a resource in the Apps
+#   UI (Add resource -> Database). Nothing to set here.
+# - ENDPOINT_NAME is workspace-specific, so it's stored as a Databricks
+#   Secret (scope: ticketing-app, key: endpoint_name) and attached to the
+#   app as a resource named "endpoint_secret". The line above only
+#   references that resource by name via `valueFrom` — the real value is
+#   resolved by Databricks at runtime and never appears in this file.
+#   See README.md for the exact CLI commands to create the secret.
+# - The only other secret in this system is a short-lived OAuth token,
+#   generated at runtime in app.py via the Databricks SDK's
+#   WorkspaceClient — it is never written to disk, logged, or committed
+#   anywhere.
